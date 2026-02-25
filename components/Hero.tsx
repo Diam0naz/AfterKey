@@ -8,10 +8,8 @@ export default function Hero() {
   return (
     <>
       <Navbar />
-      {/* Container: Removed static bg image, added overflow-hidden and dark base color */}
       <div className="relative min-h-screen flex items-center justify-center py-8 px-4 sm:px-8 md:px-16 lg:px-24 bg-slate-950 text-white overflow-hidden">
         
-        {/* Animated Background Element */}
         <motion.div 
           className="absolute inset-0 z-0"
           animate={{
@@ -24,7 +22,6 @@ export default function Hero() {
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
         />
 
-        {/* Optional: Floating Blobs for extra depth */}
         <motion.div 
           animate={{ x: [0, 100, 0], y: [0, 50, 0] }}
           transition={{ duration: 20, repeat: Infinity }}
@@ -53,7 +50,7 @@ export default function Hero() {
 
             <Link
               href="/signup"
-              className="inline-block bg-gradient-to-br from-indigo-700 to-indigo-500 px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 text-sm sm:text-base font-medium"
+              className="inline-block bg-linear-to-br from-indigo-700 to-indigo-500 px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 text-sm sm:text-base font-medium"
             >
               Get Started
             </Link>

@@ -1,15 +1,16 @@
-// import { Contract, ProviderInterface, AccountInterface } from "starknet";
-// import legacyAbi from "./legacyAbi.json";
+import { Contract, Abi } from "starknet";
+import legacyAbi from "./legacyAbi.json";
 
-// export const LEGACY_CONTRACT_ADDRESS =
-//   process.env.NEXT_PUBLIC_LEGACY_CONTRACT_ADDRESS as string;
+export const LEGACY_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_LEGACY_CONTRACT_ADDRESS || "";
 
-// export function getLegacyContract(
-//   providerOrAccount: ProviderInterface | AccountInterface
-// ) {
-//   return new Contract(
-//     legacyAbi as any,
-//     // LEGACY_CONTRACT_ADDRESS,
-//     // providerOrAccount
-//   );
-// }
+export function getLegacyContract(providerOrAccount: any) {
+  if (!providerOrAccount) {
+    throw new Error("Contract initialization failed: No provider or account found.");
+  }
+
+  return new Contract(
+    legacyAbi as Abi,
+    LEGACY_CONTRACT_ADDRESS,
+    providerOrAccount
+  );
+}

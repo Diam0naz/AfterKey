@@ -1,5 +1,5 @@
-import "./globals.css";
 import Providers from "./providers";
+import "./globals.css";
 
 export const metadata = {
   title: "Legacy Protocol",
@@ -13,8 +13,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-[#050816] text-white">
-        <Providers>{children}</Providers>
+      <body>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );
