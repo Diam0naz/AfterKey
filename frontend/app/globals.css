@@ -1,0 +1,138 @@
+@import "tailwindcss";
+/* @import "tailwindcss/preflight";
+@tailwind utilities; */
+/* 
+html, body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #ffffff;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #8c61ff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: #5ec2ff;
+}
+
+button {
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+input, select, textarea {
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #8c61ff;
+  box-shadow: 0 0 8px rgba(140, 97, 255, 0.5);
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(140,97,255,0.5);
+  border-radius: 4px;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.btn-purple {
+  background: linear-gradient(135deg, #8c61ff, #5e00ff);
+  color: #fff;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-purple:hover {
+  filter: brightness(1.15);
+}
+
+.btn-cyan {
+  background: linear-gradient(135deg, #00f0ff, #00c2ff);
+  color: #000;
+}
+
+.btn-cyan:hover {
+  filter: brightness(1.15);
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body {
+    padding: 1rem;
+  }
+} */
