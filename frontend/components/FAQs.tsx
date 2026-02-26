@@ -55,37 +55,42 @@ const FAQs = () => {
         </p>
       </ScrollReveal>
 
-      <div className="max-w-4xl mx-auto mt-16 space-y-6">
+      <div className="max-w-4xl mx-auto mt-16 space-y-6 relative z-10">
         {faqs.map((faq, index) => (
           <ScrollReveal key={index} delay={index * 0.07}>
-            <div className="border border-indigo-500/40 rounded-xl overflow-hidden bg-gray-800/30 shadow-lg">
-              <button
-                className="w-full flex justify-between items-center px-6 py-5 text-left text-indigo-100 hover:text-indigo-400 transition relative"
-                onClick={() => toggleFAQ(index)}>
-                <span className="font-medium text-lg">{faq.question}</span>
+            {}
+            <button
+              onClick={() => toggleFAQ(index)}
+              className="w-full border border-indigo-500/40 rounded-xl overflow-hidden bg-gray-800/30 shadow-lg text-left transition-all duration-300 hover:bg-gray-800/50 group relative"
+            >
+              <div className="px-6 py-5 flex justify-between items-center text-indigo-100">
+                <span className="font-medium text-lg group-hover:text-indigo-400 transition-colors">
+                  {faq.question}
+                </span>
                 {openIndex === index ? (
-                  <FiChevronUp className="text-xl" />
+                  <FiChevronUp className="text-xl text-indigo-400" />
                 ) : (
-                  <FiChevronDown className="text-xl" />
+                  <FiChevronDown className="text-xl text-indigo-400" />
                 )}
-
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-linear-to-r from-red-500 via-indigo-500 to-red-500 opacity-50"></span>
-              </button>
+              </div>
 
               <AnimatePresence initial={false}>
                 {openIndex === index && (
                   <motion.div
-                    key="content"
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="px-6 pb-6 text-indigo-100/70">
-                    {faq.answer}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    <div className="px-6 pb-6 text-indigo-100/70">
+                      {faq.answer}
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+              {}
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-linear-to-r from-red-500 via-indigo-500 to-red-500 opacity-50"></span>
+            </button>
           </ScrollReveal>
         ))}
       </div>
@@ -94,26 +99,3 @@ const FAQs = () => {
 };
 
 export default FAQs;
-
-// export default function FAQs() {
-//   const faqs = [
-//     { q: "Is AfterKey safe?", a: "Yes! All operations are executed via audited smart contracts." },
-//     { q: "Can I change trustees?", a: "Absolutely. You can add or remove trustees anytime." },
-//     { q: "Do I need crypto experience?", a: "No, we guide you through wallet setup and onboarding." },
-//   ];
-
-//   return (
-//     <section className="py-24 px-6 md:px-16 bg-[#11141f]">
-//       <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">FAQs</h2>
-
-//       <div className="max-w-3xl mx-auto space-y-6">
-//         {faqs.map((f, i) => (
-//           <details key={i} className="card p-4">
-//             <summary className="font-semibold cursor-pointer">{f.q}</summary>
-//             <p className="mt-2 text-gray-300">{f.a}</p>
-//           </details>
-//         ))}
-//       </div>
-//     </section>
-//   );
-// }

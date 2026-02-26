@@ -38,7 +38,7 @@ export default function Steps() {
     <section
       id="how-it-works"
       className="py-24 px-6 md:px-16 bg-[#0b0f1a] relative overflow-hidden">
-      {/* connector line (desktop) */}
+      {}
       <div className="hidden md:block absolute top-1/2 left-[14%] right-[14%] h-px bg-linear-to-r from-indigo-500/0 via-indigo-500/40 to-indigo-500/0 pointer-events-none" />
 
       <ScrollReveal className="text-center mb-16">
@@ -67,7 +67,7 @@ export default function Steps() {
                 ],
               }}
               viewport={{ once: true }}>
-              {/* step number badge */}
+              {}
               <div
                 className={`w-14 h-14 rounded-full bg-linear-to-br ${step.color} flex items-center justify-center text-white font-bold text-lg mb-5 shadow-lg`}>
                 {step.number}

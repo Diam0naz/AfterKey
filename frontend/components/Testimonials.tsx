@@ -43,7 +43,7 @@ const testimonials = [
 export default function Testimonials() {
   return (
     <section className="py-24 px-6 md:px-16 bg-[#0b0f1a] relative overflow-hidden">
-      {/* Background accent */}
+      {}
       <div className="absolute inset-0 bg-linear-to-b from-[#11141f] to-[#0b0f1a] pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-indigo-600/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute inset-0" style={{ zIndex: 2 }}>
@@ -69,12 +69,12 @@ export default function Testimonials() {
                 whileHover={{ y: -6, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 280 }}
                 className="relative flex flex-col h-full p-6 rounded-2xl border border-white/8 bg-linear-to-b from-white/5 to-white/2 backdrop-blur-sm hover:border-indigo-500/30 hover:from-white/8 transition-all duration-300 cursor-default">
-                {/* Quote mark decoration */}
+                {}
                 <div className="text-5xl text-indigo-500/20 font-serif leading-none mb-3 select-none">
                   &ldquo;
                 </div>
 
-                {/* Rating */}
+                {}
                 <div className="flex gap-0.5 mb-3">
                   {Array.from({ length: t.rating }).map((_, si) => (
                     <FiStar
@@ -86,12 +86,12 @@ export default function Testimonials() {
                   ))}
                 </div>
 
-                {/* Text */}
+                {}
                 <p className="text-gray-300 text-sm leading-relaxed flex-1 mb-6">
                   {t.text}
                 </p>
 
-                {/* Author row */}
+                {}
                 <div className="flex items-center gap-3 mt-auto">
                   <div
                     className={`w-10 h-10 rounded-full bg-linear-to-br ${t.avatarColor} flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-md`}>
@@ -105,7 +105,7 @@ export default function Testimonials() {
                   </div>
                 </div>
 
-                {/* Subtle bottom gradient line */}
+                {}
                 <div className="absolute bottom-0 left-6 right-6 h-px bg-linear-to-r from-transparent via-indigo-500/30 to-transparent rounded-full" />
               </motion.div>
             </ScrollReveal>
@@ -115,7 +115,7 @@ export default function Testimonials() {
         <ScrollReveal delay={0.3} className="mt-14 text-center">
           <Link
             href="/signup"
-            className="inline-block bg-linear-to-br from-indigo-600 to-purple-600 px-10 py-3.5 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_0_28px_rgba(99,102,241,0.45)] text-white">
+            className="inline-block bg-indigo-600 px-10 py-3.5 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_0_28px_rgba(99,102,241,0.45)] text-white">
             Get Started Today
           </Link>
         </ScrollReveal>

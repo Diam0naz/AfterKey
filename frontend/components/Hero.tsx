@@ -9,9 +9,9 @@ export default function Hero() {
   return (
     <>
       <Navbar />
-      {/* Hero wrapper — particles sit at z-0, content at z-10 */}
+      {}
       <div className="relative min-h-screen flex items-center justify-center py-8 px-4 sm:px-8 md:px-16 lg:px-24 bg-slate-950 text-white overflow-hidden">
-        {/* ── Top-left slanted divider — inverse of bottom slant ── */}
+        {}
         <div
           className="absolute top-0 left-0 w-full overflow-hidden pointer-events-none lg:block hidden"
           style={{ zIndex: 20 }}>
@@ -34,7 +34,7 @@ export default function Hero() {
             <path d="M0,0 L1440,0 L0,80 Z" fill="#020617" />
           </svg>
         </div>
-        {/* ── Layer 0: animated radial bg ── */}
+        {}
 
         <motion.div
           className="absolute inset-0"
@@ -49,12 +49,12 @@ export default function Hero() {
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
         />
 
-        {/* ── Layer 1: Floating particles ── */}
+        {}
         <div className="absolute inset-0" style={{ zIndex: 2 }}>
           <ParticleCanvas />
         </div>
 
-        {/* ── Layer 2: glow orbs ── */}
+        {}
         <motion.div
           animate={{ x: [0, 100, 0], y: [0, 50, 0] }}
           transition={{ duration: 20, repeat: Infinity }}
@@ -67,18 +67,17 @@ export default function Hero() {
           className="absolute bottom-0 right-0 w-80 h-80 bg-purple-700/15 rounded-full blur-[100px] pointer-events-none"
           style={{ zIndex: 3 }}
         />
-
-        {/* ── Layer 3: Hero content ── */}
+        {}
         <div
           className="relative max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 pt-16 lg:gap-16 items-center"
           style={{ zIndex: 10 }}>
-          {/* Left: headline + CTA */}
+          {}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-center lg:text-left ">
-            {/* Badge */}
+            {}
             <motion.span
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -110,7 +109,7 @@ export default function Hero() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link
                 href="/signup"
-                className="inline-block bg-linear-to-br from-indigo-600 to-purple-600 px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_24px_rgba(99,102,241,0.5)] text-sm sm:text-base font-semibold">
+                className="inline-block bg-indigo-600 hover:bg-indigo-500 text-sm sm:text-base text-white px-8 py-3 rounded-lg transition-all duration-300 font-semibold shadow-lg shadow-indigo-500/25 text-center">
                 Get Started →
               </Link>
               <Link
@@ -121,7 +120,7 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Right: image */}
+          {}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -142,7 +141,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* ── Slanted bottom divider ── */}
+        {}
         <div
           className="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none lg:block hidden"
           style={{ zIndex: 20 }}>

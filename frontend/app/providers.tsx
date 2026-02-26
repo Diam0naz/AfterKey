@@ -1,7 +1,7 @@
 "use client";
 import { ReactNode } from "react";
 import { PrivyProvider } from "@privy-io/react-auth";
-import { StarknetConfig, publicProvider, argent, braavos, useInjectedConnectors } from "@starknet-react/core";
+import { StarknetConfig, publicProvider, argent, braavos, useInjectedConnectors, jsonRpcProvider } from "@starknet-react/core";
 import { sepolia, mainnet } from "@starknet-react/chains";
 
 export default function Providers({ children }: { children: ReactNode }) {
@@ -25,14 +25,18 @@ export default function Providers({ children }: { children: ReactNode }) {
         },
       }}
     >
-      <StarknetConfig 
-        chains={[sepolia, mainnet]} 
-        provider={publicProvider()} 
-        connectors={connectors}
-        autoConnect
-      >
-        {children}
-      </StarknetConfig>
+      <StarknetConfig
+  chains={[sepolia]}
+  provider={jsonRpcProvider({
+    rpc: () => ({
+      nodeUrl: process.env.NEXT_PUBLIC_STARKNET_RPC!,
+    }),
+  })}
+  connectors={connectors}
+  autoConnect
+>
+  {children}
+</StarknetConfig>
     </PrivyProvider>
   );
 }

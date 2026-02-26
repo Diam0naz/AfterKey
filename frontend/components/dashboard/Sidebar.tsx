@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Wallet, Users, Settings, LogOut } from "lucide-react";
 import { usePrivy } from "@privy-io/react-auth";
@@ -17,11 +18,9 @@ export default function Sidebar() {
 
   return (
     <aside className="hidden md:flex w-64 flex-col bg-slate-950 border-r border-slate-800/50 p-6 transition-all">
-      <div className="mb-10 px-2">
-        <h2 className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-500">
-          AfterKey
-        </h2>
-      </div>
+        <Link href="/dashboard">
+            <Image src={"/fullLogo.png"} alt="Hero Image" width={200} height={30} className="md:block hidden" />
+        </Link>
 
       <nav className="flex-1 flex flex-col gap-2">
         {menuItems.map((item) => {

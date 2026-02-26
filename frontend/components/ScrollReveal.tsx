@@ -31,7 +31,6 @@ export default function ScrollReveal({
     if (isInView) {
       controls.start(visibleVariant);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView]);
 
   return (

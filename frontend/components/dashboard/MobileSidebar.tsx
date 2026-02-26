@@ -1,6 +1,7 @@
 "use client";
 import { useAppStore } from "@/lib/store";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, LayoutDashboard, Wallet, Users, Settings } from "lucide-react";
@@ -38,7 +39,9 @@ export default function MobileSidebar() {
             className="fixed left-0 top-0 z-[101] h-full w-72 bg-slate-950 border-r border-slate-800 p-6 md:hidden shadow-2xl"
           >
             <div className="flex items-center justify-between mb-10">
-              <span className="text-xl font-bold text-white">AfterKey</span>
+                <Link href="/dashboard">
+                    <Image src={"/fullLogo.png"} alt="Hero Image" width={200} height={30}  />
+                </Link>
               <button
                 onClick={toggleSidebar}
                 className="p-2 text-slate-400 hover:text-white bg-slate-900 rounded-lg"

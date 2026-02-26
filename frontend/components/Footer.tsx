@@ -9,7 +9,7 @@ const socials = [
     href: "https://twitter.com",
     label: "Twitter",
   },
-  { icon: <FiGithub size={18} />, href: "https://github.com", label: "GitHub" },
+  { icon: <FiGithub size={18} />, href: "https://github.com/Unique-Ikeoluwa/AfterKey", label: "GitHub" },
   {
     icon: <RiDiscordLine size={20} />,
     href: "https://discord.com",
@@ -20,7 +20,7 @@ const socials = [
 export default function Footer() {
   return (
     <footer className="relative flex flex-col items-center py-12 px-6 md:px-16 bg-[#11141f] text-gray-400 text-center">
-      {/* Social icon tray */}
+      {}
       <div className="flex justify-center items-center gap-4">
         {socials.map(({ icon, href, label }) => (
           <Link

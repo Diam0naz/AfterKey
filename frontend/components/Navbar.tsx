@@ -8,19 +8,21 @@ import { useRouter } from "next/navigation";
 export default function Navbar() {
   const router = useRouter();
   return (
-    <nav className="flex justify-between items-center py-6 px-8 md:px-16 bg-transparent fixed w-full z-50">
-      <Image
-        src={"/ChatGPT Image Feb 26, 2026, 04_07_13 AM.png"}
+    <nav className="flex justify-between sm:h-20 items-center px-8 md:px-16 backdrop-blur-lg fixed w-full z-50">
+      <Link href="/">
+        <Image
+        src={"/fullLogo.png"}
         alt="Hero Image"
-        width={180}
+        width={200}
         height={30}
         className="lg:block hidden"
       />
+      </Link>
 
       <button
         type="button"
         onClick={() => router.back()}
-        className="lg:hidden size-10 border-purple-600 border-2 rounded-full relative w-8 h-8 
+        className="lg:hidden size-10 border-purple-600 my-6 border-2 rounded-full relative w-8 h-8 
              flex items-center justify-center
              active:scale-95 transition-transform duration-150 ease-out
              hover:bg-purple-600/10">
@@ -33,15 +35,15 @@ export default function Navbar() {
 
       <div className="space-x-6 hidden md:flex">
         <Link
-          href="/signup"
-          className="text-white px-4 py-2 rounded-lg hover:shadow-[0_0_10px_rgba(99,102,241,0.5)] transition-all duration-300">
-          Sign Up
+          href="/login"
+          className="rounded-lg border border-white/10 text-gray-300 hover:border-indigo-500/50 hover:text-white px-6 py-2.5 text-sm sm:text-base font-medium transition-colors">
+          Login
         </Link>
 
         <Link
-          href="/login"
-          className="inline-block bg-linear-to-br from-indigo-600 to-purple-600 px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_10px_rgba(99,102,241,0.5)] text-sm sm:text-base font-semibold">
-          Login
+          href="/signup"
+          className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-lg text-sm sm:text-base font-semibold transition-all shadow-lg shadow-indigo-500/20">
+          Sign Up
         </Link>
       </div>
     </nav>
