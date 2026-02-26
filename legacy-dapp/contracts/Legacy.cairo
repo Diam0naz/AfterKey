@@ -1,5 +1,5 @@
 #[starknet::interface]
-trait ILegacy<TContractState> {
+pub trait ILegacy<TContractState> {
     fn ping_heartbeat(ref self: TContractState);
     fn set_plan(ref self: TContractState, plan_type: u8);
     fn add_trustee(ref self: TContractState, trustee: starknet::ContractAddress);
@@ -14,6 +14,7 @@ mod Legacy {
     use core::integer::u64;
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
 
+
     #[storage]
     struct Storage {
         owner: ContractAddress,
@@ -21,7 +22,9 @@ mod Legacy {
         active_plan: u8,
         last_owner_activity: u64,
         trustee_count: u32,
+        #[feature("deprecated_legacy_map")]
         trustees: LegacyMap<u32, ContractAddress>,
+        #[feature("deprecated_legacy_map")]
         approvals: LegacyMap<ContractAddress, bool>,
         required_approvals: u32,
         warning_duration: u64,
@@ -38,7 +41,7 @@ mod Legacy {
         self.dormant_duration.write(604800); // 7 Days
     }
 
-    #[external(v0)]
+    #[abi(per_item)]
     impl LegacyImpl of ILegacy<ContractState> {
         fn ping_heartbeat(ref self: ContractState) {
             assert(get_caller_address() == self.owner.read(), 'ONLY_OWNER');
