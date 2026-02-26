@@ -12,7 +12,7 @@ export default function Navbar() {
       <Image
         src={"/ChatGPT Image Feb 26, 2026, 04_07_13 AM.png"}
         alt="Hero Image"
-        width={250}
+        width={180}
         height={30}
         className="lg:block hidden"
       />
