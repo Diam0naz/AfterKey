@@ -6,7 +6,7 @@ import { getStarknetAccount } from "@/lib/wallet";
 import { Copy, Check, Wallet } from "lucide-react";
 
 interface WalletAddressProps {
-  address?: string; // Optional prop if passed from Dashboard
+  address?: string; 
 }
 
 export default function WalletAddress({ address }: WalletAddressProps) {
@@ -15,7 +15,6 @@ export default function WalletAddress({ address }: WalletAddressProps) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    // If address wasn't passed as a prop, generate it manually using Privy ID
     if (!address && ready && user?.id) {
       try {
         const { address: generatedAddress } = getStarknetAccount(user.id);
@@ -35,7 +34,6 @@ export default function WalletAddress({ address }: WalletAddressProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Loading state while Privy or the Generator is working
   if (!ready || !starknetAddress) {
     return (
       <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800 backdrop-blur-md flex items-center gap-3 min-w-[240px]">
@@ -50,7 +48,6 @@ export default function WalletAddress({ address }: WalletAddressProps) {
     );
   }
 
-  // Format address for display (e.g., 0x1234...abcd)
   const displayAddr = `${starknetAddress.slice(0, 6)}...${starknetAddress.slice(-4)}`;
 
   return (

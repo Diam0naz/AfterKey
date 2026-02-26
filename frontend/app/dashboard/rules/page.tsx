@@ -23,7 +23,7 @@ export default function RulesPage() {
     setLoading(true);
     try {
       const contract = getLegacyContract(starkAccount);
-      if (!contract) return; // ✅ null guard
+      if (!contract) return; 
 
       await contract.execute_legacy();
       alert("Legacy executed successfully");
@@ -40,7 +40,7 @@ export default function RulesPage() {
     setLoading(true);
     try {
       const contract = getLegacyContract(starkAccount);
-      if (!contract) return; // ✅ null guard
+      if (!contract) return; 
 
       await contract.ping_activity();
       alert("Activity updated");

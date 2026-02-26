@@ -6,6 +6,18 @@ import { useState } from "react";
 export default function NotificationBell() {
   const { notifications } = useAppStore();
   const [open, setOpen] = useState(false);
+  const bellRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (bellRef.current && !bellRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
 
   return (
     <div className="relative">
@@ -17,28 +29,37 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-3 w-72 bg-gray-900 border border-gray-800 rounded-xl p-4 z-50">
-          <h4 className="font-semibold mb-2">Notifications</h4>
+        <div className="fixed sm:absolute right-4 left-4 sm:left-auto sm:right-0 mt-4 sm:w-80 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl z-[60] backdrop-blur-xl overflow-hidden">
+          <div className="flex items-center justify-between p-4 border-b border-slate-800/50 bg-slate-900/50">
+            <h4 className="font-bold text-white text-xs uppercase tracking-widest">Notifications</h4>
+            {notifications.length > 0 && (
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation(); 
+                  clearNotifications();
+                }}
+                className="text-[10px] flex items-center gap-1 text-indigo-400 hover:text-indigo-300 font-bold uppercase transition-colors"
+              >
+                <CheckCheck size={12} />
+                Clear All
+              </button>
+            )}
+          </div>
 
-          {notifications.length === 0 ? (
-            <p className="text-sm text-gray-400">
-              No notifications yet
-            </p>
-          ) : (
-            <ul className="space-y-2">
-              {notifications.map((n) => (
-                <li
-                  key={n.id}
-                  className="text-sm border-b border-gray-800 pb-2"
-                >
-                  <p>{n.message}</p>
-                  <span className="text-xs text-gray-500">
-                    {n.time}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
+          <div className="max-h-80 overflow-y-auto divide-y divide-slate-800/50">
+            {notifications.length === 0 ? (
+              <p className="text-sm text-slate-500 py-8 text-center italic">No new alerts</p>
+            ) : (
+              notifications.map((n) => (
+                <div key={n.id} className="p-4 hover:bg-slate-800/30 transition-colors">
+                  <p className={`text-sm ${n.message.includes('Warning') ? 'text-yellow-200/90 font-medium' : 'text-slate-300'}`}>
+                    {n.message}
+                  </p>
+                  <span className="text-[10px] text-slate-500 mt-1 block font-bold">{n.time}</span>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       )}
     </div>

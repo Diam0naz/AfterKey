@@ -11,7 +11,7 @@ export interface Trustee {
   name: string;
   email: string;
   walletAddress: string;
-  unlockAt: number; // timestamp (ms)
+  unlockAt: number; 
   executed: boolean;
 }
 
@@ -30,6 +30,7 @@ interface AppState {
 
   setWallet: (wallet: WalletData) => void;
   addNotification: (message: string) => void;
+  clearNotifications: () => void; 
   toggleSidebar: () => void;
 
   addTrustee: (t: Omit<Trustee, "id" | "executed">) => void;
@@ -40,7 +41,13 @@ interface AppState {
 export const useAppStore = create<AppState>((set) => ({
   wallet: null,
   initialized: false,
-  notifications: [],
+  notifications: [
+    { 
+      id: 1, 
+      message: "⚠️ Warning: Inactivity detected. 30 days until asset transfer begins.", 
+      time: "10:30 AM" 
+    }
+  ],
   sidebarOpen: false,
   trustees: [],
 

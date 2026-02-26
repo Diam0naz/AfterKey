@@ -25,7 +25,7 @@ export default function LoginPage() {
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
         />
 
-        {/* Floating Accent Blur */}
+        {}
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px]" />
 
         <motion.div

@@ -4,7 +4,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import HandleLogin from "@/components/HandleLogin";
+import HandleLogin from "@/components/HandleLogin"; 
 import Navbar from "@/components/Navbar";
 
 export default function AuthPage() {
@@ -20,8 +20,8 @@ export default function AuthPage() {
   return (
     <>
       <Navbar />
-      <div className="relative min-h-screen flex flex-col items-center justify-center p-4 bg-slate-950 text-white overflow-hidden">
-        
+      <div className="relative min-h-screen flex flex-col items-center justify-center p-4 bg-slate-950 text-white overflow-hidden">   
+        {}
         <motion.div 
           className="absolute inset-0 z-0"
           animate={{
@@ -33,9 +33,8 @@ export default function AuthPage() {
           }}
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
         />
-
+        {}
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px]" />
-
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
