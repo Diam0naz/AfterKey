@@ -1,5 +1,5 @@
 #[starknet::interface]
-trait ILegacy<TContractState> {
+pub trait ILegacy<TContractState> {
     fn ping_heartbeat(ref self: TContractState);
     fn set_plan(ref self: TContractState, plan_type: u8);
     fn add_trustee(ref self: TContractState, trustee: starknet::ContractAddress);
@@ -11,17 +11,20 @@ trait ILegacy<TContractState> {
 
 #[starknet::contract]
 mod Legacy {
-    use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
     use core::integer::u64;
+    use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
+
 
     #[storage]
     struct Storage {
         owner: ContractAddress,
         legacy_executed: bool,
-        active_plan: u8, 
+        active_plan: u8,
         last_owner_activity: u64,
         trustee_count: u32,
+        #[feature("deprecated_legacy_map")]
         trustees: LegacyMap<u32, ContractAddress>,
+        #[feature("deprecated_legacy_map")]
         approvals: LegacyMap<ContractAddress, bool>,
         required_approvals: u32,
         warning_duration: u64,
@@ -38,7 +41,7 @@ mod Legacy {
         self.dormant_duration.write(604800); // 7 Days
     }
 
-    #[external(v0)]
+    #[abi(per_item)]
     impl LegacyImpl of ILegacy<ContractState> {
         fn ping_heartbeat(ref self: ContractState) {
             assert(get_caller_address() == self.owner.read(), 'ONLY_OWNER');
@@ -68,12 +71,17 @@ mod Legacy {
             let now = get_block_timestamp();
             let last_active = self.last_owner_activity.read();
             let plan = self.active_plan.read();
-            
+
             let plan_duration: u64 = match plan {
-                1 => 15552000, 2 => 31104000, 3 => 93312000, _ => 15552000,
+                1 => 15552000,
+                2 => 31104000,
+                3 => 93312000,
+                _ => 15552000,
             };
 
-            let total_wait = plan_duration + self.warning_duration.read() + self.dormant_duration.read();
+            let total_wait = plan_duration
+                + self.warning_duration.read()
+                + self.dormant_duration.read();
             assert(now >= (last_active + total_wait), 'VAULT_LOCKED');
 
             self.legacy_executed.write(true);
@@ -84,12 +92,22 @@ mod Legacy {
             let total = self.trustee_count.read();
             let mut i: u32 = 0;
             loop {
-                if i == total { break; }
-                if self.approvals.read(self.trustees.read(i)) { count += 1; }
+                if i == total {
+                    break;
+                }
+                if self.approvals.read(self.trustees.read(i)) {
+                    count += 1;
+                }
                 i += 1;
-            };
+            }
 
-            (self.legacy_executed.read(), count, self.required_approvals.read(), self.last_owner_activity.read(), self.active_plan.read())
+            (
+                self.legacy_executed.read(),
+                count,
+                self.required_approvals.read(),
+                self.last_owner_activity.read(),
+                self.active_plan.read(),
+            )
         }
 
         fn get_trustee_count(self: @ContractState) -> u32 {

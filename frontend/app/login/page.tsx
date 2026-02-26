@@ -2,15 +2,18 @@
 import HandleLogin from "@/components/HandleLogin";
 import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
+import ParticleCanvas from "@/components/ParticleCanvas";
 
 export default function LoginPage() {
   return (
     <>
       <Navbar />
       <div className="relative min-h-screen flex flex-col items-center justify-center p-4 bg-slate-950 text-white overflow-hidden">
-        
-        {}
-        <motion.div 
+        <div className="absolute inset-0" style={{ zIndex: 2 }}>
+          <ParticleCanvas />
+        </div>
+        {/* Animated Background (Matches Hero & Sign Up) */}
+        <motion.div
           className="absolute inset-0 z-0"
           animate={{
             background: [
@@ -25,12 +28,11 @@ export default function LoginPage() {
         {}
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px]" />
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="relative z-10 w-full max-w-4xl mx-auto"
-        >
+          className="relative z-10 w-full max-w-4xl mx-auto">
           <HandleLogin />
         </motion.div>
       </div>

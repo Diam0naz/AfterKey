@@ -2,14 +2,17 @@
 import Navbar from "@/components/Navbar";
 import PrivySignUp from "@/components/SignInFlow/PrivySignUp";
 import { motion } from "framer-motion";
+import ParticleCanvas from "@/components/ParticleCanvas";
 
 export default function SignUpPage() {
   return (
     <>
       <Navbar />
       <div className="relative min-h-screen flex flex-col items-center justify-center p-4 bg-slate-950 text-white overflow-hidden">
-        
-        <motion.div 
+        <div className="absolute inset-0" style={{ zIndex: 2 }}>
+          <ParticleCanvas />
+        </div>
+        <motion.div
           className="absolute inset-0 z-0"
           animate={{
             background: [
@@ -22,13 +25,11 @@ export default function SignUpPage() {
         />
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px]" />
         <div className="relative z-10 w-full max-w-4xl mx-auto">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="py-8"
-          >
-          </motion.div>
-          
+            className="py-8"></motion.div>
+
           <PrivySignUp />
         </div>
       </div>

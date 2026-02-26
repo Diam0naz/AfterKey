@@ -3,11 +3,7 @@
 import { useState } from "react";
 import { useAppStore } from "@/lib/store";
 
-export default function AddTrusteeModal({
-  onClose,
-}: {
-  onClose: () => void;
-}) {
+export default function AddTrusteeModal({ onClose }: { onClose: () => void }) {
   const { addTrustee, addNotification } = useAppStore();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -50,9 +46,7 @@ export default function AddTrusteeModal({
         />
 
         <div>
-          <label className="text-sm text-gray-400">
-            Unlock after (hours)
-          </label>
+          <label className="text-sm text-gray-400">Unlock after (hours)</label>
           <input
             type="number"
             min={1}
@@ -63,16 +57,10 @@ export default function AddTrusteeModal({
         </div>
 
         <div className="flex justify-end gap-3 pt-2">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 rounded bg-gray-700"
-          >
+          <button onClick={onClose} className="px-4 py-2 rounded bg-gray-700">
             Cancel
           </button>
-          <button
-            onClick={submit}
-            className="px-4 py-2 rounded bg-purple-600"
-          >
+          <button onClick={submit} className="px-4 py-2 rounded bg-purple-600">
             Add
           </button>
         </div>

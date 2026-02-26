@@ -11,7 +11,7 @@ export interface Trustee {
   name: string;
   email: string;
   walletAddress: string;
-  unlockAt: number; 
+  unlockAt: number;
   executed: boolean;
 }
 
@@ -30,58 +30,67 @@ interface AppState {
 
   setWallet: (wallet: WalletData) => void;
   addNotification: (message: string) => void;
-  clearNotifications: () => void; 
+  clearNotifications: () => void;
   toggleSidebar: () => void;
 
   addTrustee: (t: Omit<Trustee, "id" | "executed">) => void;
   removeTrustee: (id: number) => void;
   markExecuted: (id: number) => void;
 }
-
 export const useAppStore = create<AppState>((set) => ({
   wallet: null,
   initialized: false,
+
   notifications: [
-    { 
-      id: 1, 
-      message: "⚠️ Warning: Inactivity detected. 30 days until asset transfer begins.", 
-      time: "10:30 AM" 
-    }
+    {
+      id: 1,
+      message:
+        "⚠️ Warning: Inactivity detected. 30 days until asset transfer begins.",
+      time: "10:30 AM",
+    },
   ],
+
   sidebarOpen: false,
   trustees: [],
 
-  setWallet: (wallet) => set({ wallet, initialized: true }),
+  setWallet: (wallet: string) => set({ wallet, initialized: true }),
 
-  addNotification: (message) =>
+  addNotification: (message: string) =>
     set((state) => ({
       notifications: [
-        { 
-          id: Date.now(), 
-          message, 
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
-        },
         ...state.notifications,
+        {
+          id: Date.now(),
+          message,
+          time: new Date().toLocaleTimeString(),
+        },
       ],
     })),
-  clearNotifications: () => set({ notifications: [] }),
-  toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
+
+  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+
   addTrustee: (t) =>
     set((state) => ({
       trustees: [
         ...state.trustees,
-        { ...t, id: Date.now(), executed: false },
+        {
+          ...t,
+          id: Date.now(),
+          executed: false,
+        },
       ],
     })),
-  removeTrustee: (id) =>
+  clearNotifications: () => {},
+
+  removeTrustee: (id: number) =>
     set((state) => ({
       trustees: state.trustees.filter((t) => t.id !== id),
     })),
 
-  markExecuted: (id) =>
+  markExecuted: (id: number) =>
     set((state) => ({
       trustees: state.trustees.map((t) =>
-        t.id === id ? { ...t, executed: true } : t
+        t.id === id ? { ...t, executed: true } : t,
       ),
     })),
 }));

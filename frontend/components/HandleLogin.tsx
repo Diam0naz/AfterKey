@@ -80,7 +80,7 @@ export default function HandleLogin() {
         disabled={isLoading || !ready}
         className={`w-full flex items-center justify-center gap-3 py-4 rounded-xl font-semibold transition-all duration-300 ${
           !isLoading && ready
-            ? "bg-gradient-to-br from-indigo-700 to-indigo-500 hover:scale-[1.02] shadow-lg shadow-indigo-500/20 text-white"
+            ? "bg-linear-to-br from-indigo-700 to-indigo-500 hover:scale-[1.02] shadow-lg shadow-indigo-500/20 text-white"
             : "bg-slate-800 text-slate-500 cursor-not-allowed opacity-70"
         }`}
       >

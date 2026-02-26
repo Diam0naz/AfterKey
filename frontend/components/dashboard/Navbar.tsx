@@ -33,8 +33,7 @@ export default function Navbar() {
         <button
           onClick={toggleSidebar}
           className="md:hidden p-2 hover:bg-slate-800 rounded-lg transition-colors"
-          aria-label="Toggle sidebar"
-        >
+          aria-label="Toggle sidebar">
           <Menu className="text-slate-300" size={24} />
         </button>
         <div className="hidden md:flex items-center gap-3 bg-slate-900/50 border border-slate-800 px-4 py-1.5 rounded-full">
@@ -52,8 +51,7 @@ export default function Navbar() {
           <NotificationBell />
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-all"
-          >
+            className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-all">
             <LogOut size={16} />
             <span className="hidden sm:inline">Logout</span>
           </button>
