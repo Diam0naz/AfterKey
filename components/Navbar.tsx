@@ -20,7 +20,7 @@ export default function Navbar() {
       <button
         type="button"
         onClick={() => router.back()}
-        className="size-10 border-purple-600 border-2 rounded-full relative w-8 h-8 
+        className="lg:hidden size-10 border-purple-600 border-2 rounded-full relative w-8 h-8 
              flex items-center justify-center
              active:scale-95 transition-transform duration-150 ease-out
              hover:bg-purple-600/10">
