@@ -41,9 +41,7 @@ export default function WalletPage() {
           <p className="text-gray-400 text-sm mb-2">Wallet Address</p>
 
           <div className="flex items-center justify-between gap-4">
-            <p className="break-all text-sm">
-              {wallet.address}
-            </p>
+            <p className="break-all text-sm">{wallet.address}</p>
             <CopyButton value={wallet.address} />
           </div>
         </div>
@@ -54,15 +52,12 @@ export default function WalletPage() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-gray-400 text-sm">Seed Phrase</p>
-            <p className="text-xs text-red-400">
-              Never share this with anyone
-            </p>
+            <p className="text-xs text-red-400">Never share this with anyone</p>
           </div>
 
           <button
             onClick={() => setShowSeed(!showSeed)}
-            className="text-sm text-purple-400 hover:text-purple-300"
-          >
+            className="text-sm text-purple-400 hover:text-purple-300">
             {showSeed ? "Hide" : "Reveal"}
           </button>
         </div>
@@ -71,8 +66,7 @@ export default function WalletPage() {
           <p
             className={`text-sm break-all transition ${
               showSeed ? "" : "blur-md select-none"
-            }`}
-          >
+            }`}>
             {wallet.mnemonic}
           </p>
 
@@ -88,23 +82,14 @@ export default function WalletPage() {
           {MOCK_ASSETS.map((asset) => (
             <div
               key={asset.symbol}
-              className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6"
-            >
+              className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-lg font-semibold">
-                  {asset.symbol}
-                </span>
-                <span className="text-xs text-gray-400">
-                  {asset.network}
-                </span>
+                <span className="text-lg font-semibold">{asset.symbol}</span>
+                <span className="text-xs text-gray-400">{asset.network}</span>
               </div>
 
-              <p className="text-2xl font-bold mb-1">
-                {asset.balance}
-              </p>
-              <p className="text-sm text-gray-400">
-                ≈ ${asset.usdValue}
-              </p>
+              <p className="text-2xl font-bold mb-1">{asset.balance}</p>
+              <p className="text-sm text-gray-400">≈ ${asset.usdValue}</p>
             </div>
           ))}
         </div>

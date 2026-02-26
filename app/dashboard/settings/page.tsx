@@ -6,9 +6,7 @@ export default function SettingsPage() {
       <div className="bg-white/5 p-6 rounded-xl space-y-4">
         <div>
           <p className="text-gray-400 text-sm">Legacy Data</p>
-          <p className="text-sm mt-1">
-            Encrypted seed phrase stored off-chain
-          </p>
+          <p className="text-sm mt-1">Encrypted seed phrase stored off-chain</p>
         </div>
 
         <div>

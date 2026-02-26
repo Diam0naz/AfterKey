@@ -11,10 +11,7 @@ export default function MobileSidebar() {
   return (
     <div className="fixed inset-0 z-40 bg-black/60 md:hidden">
       <aside className="absolute left-0 top-0 h-full w-64 bg-gray-950 p-6">
-        <button
-          onClick={toggleSidebar}
-          className="mb-6 text-xl"
-        >
+        <button onClick={toggleSidebar} className="mb-6 text-xl">
           ✕
         </button>
 

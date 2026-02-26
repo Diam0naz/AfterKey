@@ -1,16 +1,16 @@
 "use client";
 
 import { usePrivy } from "@privy-io/react-auth";
-import { useAccount } from "@starknet-react/core"; 
+import { useAccount } from "@starknet-react/core";
 import { useAppStore } from "@/lib/store";
 import NotificationBell from "./NotificationBell";
 import MobileSidebar from "./MobileSidebar";
-import { LogOut, Bell, Menu } from "lucide-react"; 
+import { LogOut, Bell, Menu } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { logout } = usePrivy();
-  const { address } = useAccount(); 
+  const { address } = useAccount();
   const { toggleSidebar } = useAppStore();
   const router = useRouter();
 
@@ -26,8 +26,7 @@ export default function Navbar() {
         <button
           onClick={toggleSidebar}
           className="md:hidden p-2 hover:bg-slate-800 rounded-lg transition-colors"
-          aria-label="Toggle sidebar"
-        >
+          aria-label="Toggle sidebar">
           <Menu className="text-slate-300" size={24} />
         </button>
 
@@ -47,11 +46,10 @@ export default function Navbar() {
         {/* Action Items */}
         <div className="flex items-center gap-6">
           <NotificationBell />
-          
+
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-all"
-          >
+            className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-all">
             <LogOut size={16} />
             <span className="hidden sm:inline">Logout</span>
           </button>

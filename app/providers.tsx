@@ -11,19 +11,17 @@ export default function Providers({ children }: { children: ReactNode }) {
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ""}
       config={{
         appearance: {
-          theme: 'dark',
-          accentColor: '#6366f1',
+          theme: "dark",
+          accentColor: "#6366f1",
         },
         embeddedWallets: {
           createOnLogin: "all-users",
         },
-      }}
-    >
-      <StarknetConfig 
-        chains={[sepolia, mainnet]} 
-        provider={publicProvider()} 
-        autoConnect
-      >
+      }}>
+      <StarknetConfig
+        chains={[sepolia, mainnet]}
+        provider={publicProvider()}
+        autoConnect>
         {children}
       </StarknetConfig>
     </PrivyProvider>

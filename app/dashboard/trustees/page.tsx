@@ -62,8 +62,7 @@ export default function TrusteesPage() {
 
         <button
           onClick={addTrustee}
-          className="w-full py-3 bg-purple-600 rounded-lg"
-        >
+          className="w-full py-3 bg-purple-600 rounded-lg">
           Add Trustee
         </button>
       </div>
@@ -76,15 +75,13 @@ export default function TrusteesPage() {
         {trustees.map((t) => (
           <div
             key={t}
-            className="flex justify-between items-center bg-white/5 p-4 rounded-lg"
-          >
+            className="flex justify-between items-center bg-white/5 p-4 rounded-lg">
             <span className="text-sm">
               {t.slice(0, 6)}...{t.slice(-4)}
             </span>
             <button
               onClick={() => removeTrustee(t)}
-              className="text-red-400 text-sm"
-            >
+              className="text-red-400 text-sm">
               Remove
             </button>
           </div>
