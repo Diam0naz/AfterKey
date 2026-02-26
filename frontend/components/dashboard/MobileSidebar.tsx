@@ -20,7 +20,7 @@ export default function MobileSidebar() {
     <AnimatePresence>
       {sidebarOpen && (
         <>
-          {/* Backdrop Overlay */}
+          {}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -29,7 +29,7 @@ export default function MobileSidebar() {
             className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm md:hidden"
           />
 
-          {/* Sidebar Drawer */}
+          {}
           <motion.aside
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}

@@ -1,19 +1,28 @@
-import { RpcProvider } from "starknet";
-// import legacyAbi from "./legacyAbi.json";
-// import { LEGACY_CONTRACT_ADDRESS } from "./contract";
+import { RpcProvider, num } from "starknet";
+import { LEGACY_CONTRACT_ADDRESS } from "./contract";
 
 export async function fetchEvents() {
   const provider = new RpcProvider({
-    nodeUrl: "https://starknet-goerli.public.blastapi.io",
+    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
   });
 
-  const events = await provider.getEvents({
-    // address: LEGACY_CONTRACT_ADDRESS,
-    from_block: { block_number: 0 },
-    to_block: "latest",
-    keys: [],
-    chunk_size: 50,
-  });
+  if (!LEGACY_CONTRACT_ADDRESS) {
+    console.warn("No contract address found for event fetching.");
+    return [];
+  }
 
-  return events.events;
+  try {
+    const events = await provider.getEvents({
+      address: LEGACY_CONTRACT_ADDRESS,
+      from_block: { block_number: 0 },
+      to_block: "pending",
+      keys: [], 
+      chunk_size: 10,
+    });
+
+    return events.events;
+  } catch (error) {
+    console.error("Failed to fetch Starknet events:", error);
+    return [];
+  }
 }

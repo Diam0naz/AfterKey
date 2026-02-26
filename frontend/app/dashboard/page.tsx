@@ -30,34 +30,19 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function loadVaultData() {
-      // Wait for Privy to be ready and user to exist
       if (!ready || !user) return;
 
       try {
-        // 1. Generate the Starknet Identity from the Privy User ID
         const { account, address } = getStarknetAccount(user.id);
         setStarkAccount(account);
 
-        console.log("--- STARKNET IDENTITY LOADED ---");
-        console.log("Address:", address);
-
-        // 2. Initialize Contract with the generated account
         const contract = getLegacyContract(account);
         if (!contract) {
           console.warn("Contract initialization failed: Address missing?");
           setLoading(false);
           return;
         }
-
-        // 3. Fetch Status from Starknet Sepolia
-        // Use a try-catch specifically for the call in case contract isn't deployed
         const res = await contract.get_status();
-        
-        /**
-         * STARKNET V8 DATA HANDLING:
-         * Results often come back as BigInt. We convert to Number for 
-         * JS UI components and dates.
-         */
         const data = Array.isArray(res) 
           ? {
               executed: Boolean(res[0]),
@@ -100,7 +85,7 @@ export default function Dashboard() {
       animate={{ opacity: 1, y: 0 }} 
       className="max-w-7xl mx-auto space-y-10 p-6"
     >
-      {/* Header Section */}
+      {}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight">Vault Overview</h2>
@@ -108,11 +93,11 @@ export default function Dashboard() {
             Logged in as: <span className="text-indigo-400">{user?.email?.address || "Authenticated User"}</span>
           </p>
         </div>
-        {/* Pass the generated address to the component */}
+        {}
         <WalletAddress address={starkAccount?.address} />
       </div>
 
-      {/* Stats Grid */}
+      {}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard 
           title="Vault Status" 
@@ -140,7 +125,7 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* Subscription Tiers */}
+      {}
       <div className="space-y-6">
         <h3 className="text-2xl font-bold text-white">Security Subscriptions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

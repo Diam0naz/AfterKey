@@ -9,7 +9,7 @@ export default function LoginPage() {
       <Navbar />
       <div className="relative min-h-screen flex flex-col items-center justify-center p-4 bg-slate-950 text-white overflow-hidden">
         
-        {/* Animated Background (Matches Hero & Sign Up) */}
+        {}
         <motion.div 
           className="absolute inset-0 z-0"
           animate={{
@@ -22,7 +22,7 @@ export default function LoginPage() {
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
         />
 
-        {/* Floating Accent Blur */}
+        {}
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px]" />
 
         <motion.div 

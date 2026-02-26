@@ -1,19 +1,26 @@
 "use client";
 
-import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth";
+import { getStarknetAccount } from "@/lib/wallet";
 import { useAppStore } from "@/lib/store";
 import NotificationBell from "./NotificationBell";
 import MobileSidebar from "./MobileSidebar";
 import { LogOut, Menu } from "lucide-react"; 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
-  const { logout } = usePrivy();
-  const { wallets } = useWallets(); 
+  const { logout, user, ready } = usePrivy();
   const { toggleSidebar } = useAppStore();
+  const [starknetAddress, setStarknetAddress] = useState<string>("");
   const router = useRouter();
 
-  const address = wallets[0]?.address;
+  useEffect(() => {
+    if (ready && user?.id) {
+      const { address } = getStarknetAccount(user.id);
+      setStarknetAddress(address);
+    }
+  }, [ready, user?.id]);
 
   const handleLogout = async () => {
     await logout();
@@ -33,11 +40,11 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-3 bg-slate-900/50 border border-slate-800 px-4 py-1.5 rounded-full">
           <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
           <span className="text-xs font-medium text-slate-400">
-            Wallet:{" "}
+            Vault:{" "}
             <span className="text-slate-200 font-mono">
-              {address
-                ? `${address.slice(0, 6)}…${address.slice(-4)}`
-                : "Syncing..."} 
+              {starknetAddress
+                ? `${starknetAddress.slice(0, 6)}…${starknetAddress.slice(-4)}`
+                : "Initializing..."} 
             </span>
           </span>
         </div>

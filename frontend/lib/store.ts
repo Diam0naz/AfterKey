@@ -11,7 +11,7 @@ export interface Trustee {
   name: string;
   email: string;
   walletAddress: string;
-  unlockAt: number; // timestamp (ms)
+  unlockAt: number; 
   executed: boolean;
 }
 
@@ -28,10 +28,9 @@ interface AppState {
   sidebarOpen: boolean;
   trustees: Trustee[];
 
-  // Actions
   setWallet: (wallet: WalletData) => void;
   addNotification: (message: string) => void;
-  clearNotifications: () => void; // Added for the "Mark all as read" feature
+  clearNotifications: () => void; 
   toggleSidebar: () => void;
 
   addTrustee: (t: Omit<Trustee, "id" | "executed">) => void;
@@ -42,7 +41,6 @@ interface AppState {
 export const useAppStore = create<AppState>((set) => ({
   wallet: null,
   initialized: false,
-  // Initial Mock Notification for your Demo
   notifications: [
     { 
       id: 1, 
