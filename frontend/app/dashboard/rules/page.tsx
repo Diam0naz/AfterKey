@@ -1,25 +1,33 @@
 "use client";
 
-import { useAccount, useProvider } from "@starknet-react/core";
+import { usePrivy } from "@privy-io/react-auth";
+import { getStarknetAccount } from "@/lib/wallet";
 import { getLegacyContract } from "@/lib/contract";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function RulesPage() {
-  const { account } = useAccount();
-  const { provider } = useProvider();
-  const contract = getLegacyContract(account ?? provider);
-
+  const { user, ready } = usePrivy();
+  const [starkAccount, setStarkAccount] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
-  async function executeLegacy() {
-    if (!account) return;
-    setLoading(true);
+  useEffect(() => {
+    if (!ready || !user) return;
 
+    const { account } = getStarknetAccount(user.id);
+    setStarkAccount(account);
+  }, [ready, user]);
+
+  async function executeLegacy() {
+    if (!starkAccount) return;
+
+    setLoading(true);
     try {
+      const contract = getLegacyContract(starkAccount);
+      if (!contract) return; // ✅ null guard
+
       await contract.execute_legacy();
       alert("Legacy executed successfully");
     } catch (err) {
-      console.error(err);
       alert("Conditions not met");
     } finally {
       setLoading(false);
@@ -27,14 +35,16 @@ export default function RulesPage() {
   }
 
   async function pingActivity() {
-    if (!account) return;
-    setLoading(true);
+    if (!starkAccount) return;
 
+    setLoading(true);
     try {
+      const contract = getLegacyContract(starkAccount);
+      if (!contract) return; // ✅ null guard
+
       await contract.ping_activity();
       alert("Activity updated");
     } catch (err) {
-      console.error(err);
       alert("Failed to update activity");
     } finally {
       setLoading(false);
@@ -42,22 +52,24 @@ export default function RulesPage() {
   }
 
   return (
-    <div className="max-w-xl">
+    <div className="max-w-xl text-white">
       <h1 className="text-2xl font-bold mb-6">Legacy Rules</h1>
 
-      <div className="bg-white/5 p-6 rounded-xl space-y-4">
+      <div className="bg-white/5 p-6 rounded-xl space-y-4 border border-slate-800 backdrop-blur-md">
         <button
           onClick={pingActivity}
-          className="w-full py-3 rounded-lg bg-gray-700 hover:bg-gray-600"
+          disabled={loading}
+          className="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-bold transition-all"
         >
-          Ping Owner Activity
+          {loading ? "Processing..." : "Ping Owner Activity"}
         </button>
 
         <button
           onClick={executeLegacy}
-          className="w-full py-3 rounded-lg bg-red-600 hover:bg-red-700"
+          disabled={loading}
+          className="w-full py-3 rounded-lg bg-red-600 hover:bg-red-700 font-bold transition-all"
         >
-          Execute Legacy
+          {loading ? "Processing..." : "Execute Legacy"}
         </button>
       </div>
     </div>
