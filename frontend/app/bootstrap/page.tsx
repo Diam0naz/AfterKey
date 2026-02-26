@@ -1,26 +1,22 @@
 "use client";
-
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createWallet } from "@/lib/wallet";
-import { useAppStore } from "@/lib/store";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function BootstrapPage() {
   const router = useRouter();
-  const { wallet, setWallet } = useAppStore();
+  const { ready, authenticated } = usePrivy();
 
   useEffect(() => {
-    if (!wallet) {
-      const newWallet = createWallet();
-      setWallet(newWallet);
+    if (ready && authenticated) {
+      router.replace("/dashboard");
     }
-
-    router.replace("/dashboard");
-  }, []);
+  }, [ready, authenticated]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      Initializing secure wallet…
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white font-medium">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mr-4"></div>
+      Syncing secure identity...
     </div>
   );
 }
