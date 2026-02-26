@@ -53,8 +53,8 @@ export const useAppStore = create<AppState>((set) => ({
   sidebarOpen: false,
   trustees: [],
 
-  setWallet: (wallet: string) => set({ wallet, initialized: true }),
-
+setWallet: (wallet: WalletData) =>
+  set({ wallet, initialized: true }),
   addNotification: (message: string) =>
     set((state) => ({
       notifications: [
@@ -80,8 +80,7 @@ export const useAppStore = create<AppState>((set) => ({
         },
       ],
     })),
-  clearNotifications: () => {},
-
+clearNotifications: () => set({ notifications: [] }),
   removeTrustee: (id: number) =>
     set((state) => ({
       trustees: state.trustees.filter((t) => t.id !== id),
