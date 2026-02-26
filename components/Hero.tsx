@@ -130,19 +130,20 @@ export default function Hero() {
             <motion.div
               whileHover={{ scale: 1.04 }}
               className="relative rounded-2xl overflow-hidden ">
+                
               <Image
                 src="/coins.png"
                 alt="Hero Image"
                 width={600}
                 height={400}
-                className="rounded-2xl hover:scale-105 transition-all duration-500"
+                className="rounded-2xl hover:scale-105 transition-all duration-500 hidden lg:block"
               />
             </motion.div>
           </motion.div>
         </div>
 
         {/* ── Slanted bottom divider ── */}
-         <div
+        <div
           className="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none lg:block hidden"
           style={{ zIndex: 20 }}>
           <svg
