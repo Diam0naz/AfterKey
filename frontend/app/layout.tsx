@@ -9,7 +9,7 @@ const baseUrl =
     : "http://localhost:3000");
 
 export const metadata: Metadata = {
-  title: "Legacy Protocol",
+  title: "AfterKey",
   metadataBase: new URL(baseUrl),
   description: "Programmable Digital Legacy on StarkNet",
   openGraph: {
@@ -17,9 +17,9 @@ export const metadata: Metadata = {
     description: "Premium Web3 security platform.",
     images: [
       {
-        url: "/ChatGPT Image Feb 26, 2026, 04_11_12 AM.png",
-        width: 600,
-        height: 600,
+        url: "./icon.png",
+        width: 1200,
+        height: 1000,
       },
     ],
   },
