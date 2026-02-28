@@ -1,9 +1,9 @@
 "use client";
 
 import { usePrivy } from "@privy-io/react-auth";
-import { getStarknetAccount } from "@/lib/wallet";
+import { getStarknetAccount, isAccountDeployed } from "@/lib/wallet";
 import { getLegacyContract } from "@/lib/contract";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function RulesPage() {
   const { user, ready } = usePrivy();
@@ -12,66 +12,68 @@ export default function RulesPage() {
 
   useEffect(() => {
     if (!ready || !user) return;
-
     const { account } = getStarknetAccount(user.id);
     setStarkAccount(account);
   }, [ready, user]);
 
-  async function executeLegacy() {
+  async function pingActivity() {
     if (!starkAccount) return;
-
     setLoading(true);
     try {
-      const contract = getLegacyContract(starkAccount);
-      if (!contract) return; 
+      const deployed = await isAccountDeployed(starkAccount);
+      if (!deployed) return alert("⚠️ Account not deployed. Fund its address first.");
 
-      await contract.execute_legacy();
-      alert("Legacy executed successfully");
+      const contract = getLegacyContract(starkAccount);
+      if (!contract) return;
+
+      await contract.ping_activity();
+      alert("✅ Activity pinged successfully!");
     } catch (err) {
-      alert("Conditions not met");
+      console.error(err);
+      alert("⚠️ Failed to ping activity.");
     } finally {
       setLoading(false);
     }
   }
 
-  async function pingActivity() {
+  async function executeLegacy() {
     if (!starkAccount) return;
-
     setLoading(true);
     try {
-      const contract = getLegacyContract(starkAccount);
-      if (!contract) return; 
+      const deployed = await isAccountDeployed(starkAccount);
+      if (!deployed) return alert("⚠️ Account not deployed. Fund its address first.");
 
-      await contract.ping_activity();
-      alert("Activity updated");
+      const contract = getLegacyContract(starkAccount);
+      if (!contract) return;
+
+      await contract.execute_legacy();
+      alert("✅ Legacy executed successfully!");
     } catch (err) {
-      alert("Failed to update activity");
+      console.error(err);
+      alert("⚠️ Conditions not met or transaction failed.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="max-w-xl text-white">
-      <h1 className="text-2xl font-bold mb-6">Legacy Rules</h1>
+    <div className="max-w-4xl mx-auto space-y-6 py-16">
+      <h1 className="text-4xl font-black text-white">Legacy Rules</h1>
+      <button
+        onClick={pingActivity}
+        disabled={loading}
+        className="px-6 py-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-bold shadow-lg transition-all"
+      >
+        {loading ? "Processing..." : "Ping Activity"}
+      </button>
 
-      <div className="bg-white/5 p-6 rounded-xl space-y-4 border border-slate-800 backdrop-blur-md">
-        <button
-          onClick={pingActivity}
-          disabled={loading}
-          className="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-bold transition-all"
-        >
-          {loading ? "Processing..." : "Ping Owner Activity"}
-        </button>
-
-        <button
-          onClick={executeLegacy}
-          disabled={loading}
-          className="w-full py-3 rounded-lg bg-red-600 hover:bg-red-700 font-bold transition-all"
-        >
-          {loading ? "Processing..." : "Execute Legacy"}
-        </button>
-      </div>
+      <button
+        onClick={executeLegacy}
+        disabled={loading}
+        className="px-6 py-4 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold shadow-lg transition-all"
+      >
+        {loading ? "Processing..." : "Execute Legacy"}
+      </button>
     </div>
   );
 }

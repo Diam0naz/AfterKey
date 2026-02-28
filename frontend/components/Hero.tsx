@@ -109,7 +109,7 @@ export default function Hero() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link
                 href="/signup"
-                className="inline-block bg-indigo-600 hover:bg-indigo-500 text-sm sm:text-base text-white px-8 py-3 rounded-lg transition-all duration-300 font-semibold shadow-lg shadow-indigo-500/25 text-center">
+                className="inline-block bg-gradient-to-br from-indigo-700 to-indigo-500 hover:scale-[1.02] text-sm sm:text-base text-white px-8 py-3 rounded-lg transition-all duration-300 font-semibold shadow-lg shadow-indigo-500/25 text-center">
                 Get Started →
               </Link>
               <Link

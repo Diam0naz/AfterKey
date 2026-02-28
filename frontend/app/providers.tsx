@@ -1,18 +1,19 @@
 "use client";
+
 import { ReactNode } from "react";
 import { PrivyProvider } from "@privy-io/react-auth";
-import { StarknetConfig, publicProvider, argent, braavos, useInjectedConnectors, jsonRpcProvider } from "@starknet-react/core";
-import { sepolia, mainnet } from "@starknet-react/chains";
+import { StarknetConfig, argent, braavos, useInjectedConnectors, jsonRpcProvider } from "@starknet-react/core";
+import { sepolia } from "@starknet-react/chains";
 
 export default function Providers({ children }: { children: ReactNode }) {
   const { connectors } = useInjectedConnectors({
     recommended: [argent(), braavos()],
-    includeRecommended: "onlyIfNoConnectors", 
+    includeRecommended: "onlyIfNoConnectors",
   });
 
   return (
     <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ""}
+      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
       config={{
         appearance: {
           theme: "dark",
@@ -20,23 +21,23 @@ export default function Providers({ children }: { children: ReactNode }) {
         },
         embeddedWallets: {
           ethereum: {
-            createOnLogin: "users-without-wallets",
+            createOnLogin: "off",
           },
         },
       }}
     >
       <StarknetConfig
-  chains={[sepolia]}
-  provider={jsonRpcProvider({
-    rpc: () => ({
-      nodeUrl: process.env.NEXT_PUBLIC_STARKNET_RPC!,
-    }),
-  })}
-  connectors={connectors}
-  autoConnect
->
-  {children}
-</StarknetConfig>
+        chains={[sepolia]}
+        provider={jsonRpcProvider({
+          rpc: () => ({
+            nodeUrl: process.env.NEXT_PUBLIC_STARKNET_RPC!,
+          }),
+        })}
+        connectors={connectors}
+        autoConnect
+      >
+        {children}
+      </StarknetConfig>
     </PrivyProvider>
   );
 }

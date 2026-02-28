@@ -1,36 +1,183 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔐 AfterKey
 
-## Getting Started
+AfterKey is a non-custodial digital legacy vault built on Starknet.  
+It allows users to securely store digital assets and assign trustees who can inherit them after a defined period of inactivity.
 
-First, run the development server:
+Built with:
+- Next.js 14
+- Starknet (Sepolia)
+- OpenZeppelin Account
+- Privy Authentication
+- TailwindCSS
+
+---
+
+## 🚀 Features
+
+- 🧠 Deterministic Starknet Smart Accounts (derived from Privy ID)
+- 🔒 Non-custodial wallet architecture
+- 💰 STRK balance tracking
+- ⚡ Automatic account deployment when funded
+- 👥 Trustee management
+- 🛡 Subscription-based legacy execution logic
+- 📊 Vault dashboard with status tracking
+
+---
+
+## 🏗 Architecture Overview
+
+Each user:
+
+1. Authenticates using Privy
+2. Gets a deterministic Starknet smart account
+3. Funds the vault address
+4. Account auto-deploys on-chain
+5. Can assign trustees and manage legacy rules
+
+Smart accounts are OpenZeppelin-based and deployed on Starknet Sepolia.
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env.local` file:
+
+```env
+NEXT_PUBLIC_STARKNET_RPC=https://sepolia.rpc.starknet.rs
+NEXT_PUBLIC_OZ_CLASS_HASH=0x00e29443051402219b56827ac05950ad17435f3365ad07f4661415664bc354fb
+```
+
+---
+
+## 🛠 Installation
+
+```bash
+npm install
+```
+
+Run development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App runs on:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🧪 Starknet Sepolia Setup
 
-To learn more about Next.js, take a look at the following resources:
+1. Copy your generated vault address from Wallet page
+2. Go to Starknet Sepolia Faucet:
+   https://faucet.starknet.io
+3. Request STRK tokens
+4. Once funded, the account auto-deploys
+5. Deployment status updates in UI
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📂 Project Structure
 
-## Deploy on Vercel
+```
+/app
+  /dashboard
+  /wallet
+/lib
+  wallet.ts
+  contract.ts
+/components
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Important Files
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `lib/wallet.ts`  
+  Handles deterministic account generation and deployment logic.
+
+- `lib/contract.ts`  
+  Initializes and interacts with legacy smart contract.
+
+- `app/wallet/page.tsx`  
+  Shows vault address, balance, deployment status.
+
+- `app/dashboard/page.tsx`  
+  Displays vault status, trustees, subscription plans.
+
+---
+
+## 🔐 Smart Account Logic
+
+Accounts are derived deterministically:
+
+```ts
+privateKey = hash(starknetKeccak(privyId))
+```
+
+Address is calculated using:
+
+```
+calculateContractAddressFromHash(
+  addressSalt,
+  classHash,
+  constructorCalldata,
+  0
+)
+```
+
+Deployment occurs automatically when STRK balance > 0.
+
+---
+
+## 📦 Deployment
+
+For production:
+
+```bash
+npm run build
+npm start
+```
+
+Or deploy to Vercel.
+
+---
+
+## ⚠️ Important Notes
+
+- This project runs on Starknet Sepolia testnet.
+- Never expose private keys in production.
+- Smart accounts must be funded before deployment.
+- Deployment requires valid OpenZeppelin class hash.
+
+---
+
+## 🛡 Security Model
+
+- Non-custodial (keys derived client-side)
+- Smart account abstraction
+- No server-side key storage
+- Trustee execution requires inactivity logic
+
+---
+
+## 📌 Roadmap
+
+- Multi-token support
+- Mainnet support
+- Gasless deployment
+- Advanced trustee approval logic
+- Activity heartbeat automation
+
+---
+
+## 🧑‍💻 Author
+
+Built by the AfterKey team.
+
+---
+
+## 📜 License
+
+MIT License

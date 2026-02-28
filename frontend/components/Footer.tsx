@@ -6,7 +6,7 @@ import { BsTwitterX } from "react-icons/bs";
 const socials = [
   {
     icon: <BsTwitterX size={18} />,
-    href: "https://twitter.com",
+    href: "https://x.com/After_Key_",
     label: "Twitter",
   },
   { icon: <FiGithub size={18} />, href: "https://github.com/Unique-Ikeoluwa/AfterKey", label: "GitHub" },

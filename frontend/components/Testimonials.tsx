@@ -115,7 +115,7 @@ export default function Testimonials() {
         <ScrollReveal delay={0.3} className="mt-14 text-center">
           <Link
             href="/signup"
-            className="inline-block bg-indigo-600 px-10 py-3.5 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_0_28px_rgba(99,102,241,0.45)] text-white">
+            className="inline-block bg-gradient-to-br from-indigo-700 to-indigo-500 hover:scale-[1.02] px-10 py-3.5 rounded-xl font-semibold transition-all duration-300 hover:shadow-[0_0_28px_rgba(99,102,241,0.45)] text-white">
             Get Started Today
           </Link>
         </ScrollReveal>

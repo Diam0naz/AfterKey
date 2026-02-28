@@ -12,7 +12,7 @@ export default function LoginPage() {
         <div className="absolute inset-0" style={{ zIndex: 2 }}>
           <ParticleCanvas />
         </div>
-        {/* Animated Background (Matches Hero & Sign Up) */}
+        {}
         <motion.div
           className="absolute inset-0 z-0"
           animate={{

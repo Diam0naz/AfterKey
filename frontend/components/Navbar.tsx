@@ -42,7 +42,7 @@ export default function Navbar() {
 
         <Link
           href="/signup"
-          className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-lg text-sm sm:text-base font-semibold transition-all shadow-lg shadow-indigo-500/20">
+          className="bg-gradient-to-br from-indigo-700 to-indigo-500 hover:scale-[1.02] text-white px-6 py-2.5 rounded-lg text-sm sm:text-base font-semibold transition-all shadow-lg shadow-indigo-500/20">
           Sign Up
         </Link>
       </div>
