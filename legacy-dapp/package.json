@@ -1,0 +1,16 @@
+{
+  "name": "afterkey-legacy-deployment",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Deployment script for AfterKey Legacy contract",
+  "scripts": {
+    "deploy": "node deploy.js",
+    "deploy:sepolia": "NODE_ENV=sepolia node deploy.js"
+  },
+  "dependencies": {
+    "starknet": "^8.9.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1"
+  }
+}

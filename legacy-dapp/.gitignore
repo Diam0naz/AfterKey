@@ -1,0 +1,9 @@
+# Node project
+node_modules/
+deployment.json
+my_account.json
+legacy_contract.json
+
+# Cairo build output
+target/
+deploy.js

@@ -1,19 +1,18 @@
-#[starknet::interface]
-pub trait ILegacy<TContractState> {
-    fn ping_heartbeat(ref self: TContractState);
-    fn set_plan(ref self: TContractState, plan_type: u8);
-    fn add_trustee(ref self: TContractState, trustee: starknet::ContractAddress);
-    fn approve_legacy(ref self: TContractState);
-    fn execute_legacy(ref self: TContractState);
-    fn get_status(self: @TContractState) -> (bool, u32, u32, u64, u8);
-    fn get_trustee_count(self: @TContractState) -> u32;
-}
-
 #[starknet::contract]
 mod Legacy {
     use core::integer::u64;
     use starknet::{ContractAddress, get_block_timestamp, get_caller_address};
 
+    #[starknet::interface]
+    pub trait ILegacy<TContractState> {
+        fn ping_heartbeat(ref self: TContractState);
+        fn set_plan(ref self: TContractState, plan_type: u8);
+        fn add_trustee(ref self: TContractState, trustee: ContractAddress);
+        fn approve_legacy(ref self: TContractState);
+        fn execute_legacy(ref self: TContractState);
+        fn get_status(self: @TContractState) -> (bool, u32, u32, u64, u8);
+        fn get_trustee_count(self: @TContractState) -> u32;
+    }
 
     #[storage]
     struct Storage {
@@ -36,13 +35,13 @@ mod Legacy {
         self.owner.write(owner);
         self.required_approvals.write(required_approvals);
         self.last_owner_activity.write(get_block_timestamp());
-        self.active_plan.write(1); // Default 6 months
-        self.warning_duration.write(2592000); // 30 Days
-        self.dormant_duration.write(604800); // 7 Days
+        self.active_plan.write(1);
+        self.warning_duration.write(2592000);
+        self.dormant_duration.write(604800);
     }
 
-    #[abi(per_item)]
-    impl LegacyImpl of ILegacy<ContractState> {
+    #[abi(embed_v0)]
+impl LegacyImpl of ILegacy<ContractState> {
         fn ping_heartbeat(ref self: ContractState) {
             assert(get_caller_address() == self.owner.read(), 'ONLY_OWNER');
             self.last_owner_activity.write(get_block_timestamp());
@@ -68,6 +67,7 @@ mod Legacy {
 
         fn execute_legacy(ref self: ContractState) {
             assert(!self.legacy_executed.read(), 'ALREADY_EXECUTED');
+
             let now = get_block_timestamp();
             let last_active = self.last_owner_activity.read();
             let plan = self.active_plan.read();
@@ -79,9 +79,11 @@ mod Legacy {
                 _ => 15552000,
             };
 
-            let total_wait = plan_duration
+            let total_wait =
+                plan_duration
                 + self.warning_duration.read()
                 + self.dormant_duration.read();
+
             assert(now >= (last_active + total_wait), 'VAULT_LOCKED');
 
             self.legacy_executed.write(true);
@@ -91,13 +93,16 @@ mod Legacy {
             let mut count: u32 = 0;
             let total = self.trustee_count.read();
             let mut i: u32 = 0;
+
             loop {
                 if i == total {
                     break;
                 }
+
                 if self.approvals.read(self.trustees.read(i)) {
                     count += 1;
                 }
+
                 i += 1;
             }
 
