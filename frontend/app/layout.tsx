@@ -1,6 +1,7 @@
 import Providers from "./providers";
 import "./globals.css";
 import { Metadata } from "next";
+import { Toaster } from "sonner";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL ||
@@ -33,7 +34,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-slate-950">
-        <Providers>{children}</Providers>
+        <Providers>{children}
+          <Toaster richColors position="top-right" theme="dark" closeButton /></Providers>
       </body>
     </html>
   );

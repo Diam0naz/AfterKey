@@ -52,7 +52,7 @@ export default function TrusteesPage() {
     try {
       const deployed = await isAccountDeployed(starkAccount);
       if (!deployed) {
-        toast.error("Account not deployed. Fund its address first.", { id });
+        toast.error("Account not deployed. Fund this address first.", { id });
         return;
       }
       const contract = getLegacyContract(starkAccount);
