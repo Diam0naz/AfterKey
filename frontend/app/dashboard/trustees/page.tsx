@@ -1,11 +1,12 @@
 "use client";
-
 import { usePrivy } from "@privy-io/react-auth";
 import { getStarknetAccount, isAccountDeployed } from "@/lib/wallet";
 import { getLegacyContract } from "@/lib/contract";
 import { useEffect, useState } from "react";
-import { Plus, Trash2, UserPlus, ShieldCheck, Users, Search } from "lucide-react";
+import { Plus, Trash2, UserPlus, ShieldCheck, Users, Search, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner"; 
+
 
 export default function TrusteesPage() {
   const { user, ready } = usePrivy();
@@ -25,13 +26,11 @@ export default function TrusteesPage() {
     try {
       const deployed = await isAccountDeployed(account);
       if (!deployed) {
-        console.log("ℹ️ Account not deployed yet. Fund its address and try again.");
+        console.log("ℹ️ Account not deployed yet.");
         return;
       }
-
       const contract = getLegacyContract(account);
       if (!contract) return;
-
       const count = await contract.get_trustee_count();
       const list: string[] = [];
       for (let i = 0; i < Number(count); i++) {
@@ -41,27 +40,32 @@ export default function TrusteesPage() {
       setTrustees(list);
     } catch (e) {
       console.error(e);
-      alert("⚠️ Failed to load trustees.");
+      toast.error("Failed to load trustees from chain.");
     }
   }
 
   async function addTrustee() {
     if (!starkAccount || !trusteeAddr) return;
     setLoading(true);
+    const id = toast.loading("Adding trustee to Starknet...");
+    
     try {
       const deployed = await isAccountDeployed(starkAccount);
-      if (!deployed) return alert("⚠️ Account not deployed. Fund its address first.");
-
+      if (!deployed) {
+        toast.error("Account not deployed. Fund its address first.", { id });
+        return;
+      }
       const contract = getLegacyContract(starkAccount);
-      if (!contract) return;
-
+      if (!contract) throw new Error("Contract not found");
+      
       await contract.add_trustee(trusteeAddr);
-      alert("✅ Trustee added successfully!");
+      
+      toast.success("Trustee added successfully!", { id });
       setTrusteeAddr("");
       loadTrustees(starkAccount);
     } catch (e) {
       console.error(e);
-      alert("⚠️ Failed to add trustee.");
+      toast.error("Failed to add trustee. Check your balance.", { id });
     } finally {
       setLoading(false);
     }
@@ -70,26 +74,31 @@ export default function TrusteesPage() {
   async function removeTrustee(index: number) {
     if (!starkAccount) return;
     setLoading(true);
+    const id = toast.loading("Removing trustee...");
+
     try {
       const deployed = await isAccountDeployed(starkAccount);
-      if (!deployed) return alert("⚠️ Account not deployed. Fund its address first.");
+      if (!deployed) {
+        toast.error("Account not deployed.", { id });
+        return;
+      }
 
       const contract = getLegacyContract(starkAccount);
-      if (!contract) return;
+      if (!contract) throw new Error("Contract not found");
 
       await contract.remove_trustee(index);
-      alert("✅ Trustee removed successfully!");
+      toast.success("Trustee removed successfully!", { id });
       loadTrustees(starkAccount);
     } catch (e) {
       console.error(e);
-      alert("⚠️ Failed to remove trustee.");
+      toast.error("Failed to remove trustee.", { id });
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-10 pb-20">
+    <div className="max-w-6xl mx-auto space-y-10 pb-20 px-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-4xl font-black text-white tracking-tight">Trustees Management</h1>
@@ -113,7 +122,6 @@ export default function TrusteesPage() {
               <p className="text-xs text-slate-500 uppercase font-black tracking-tighter mt-0.5">Step 1 of 3: Assign Identity</p>
             </div>
           </div>
-
           <div className="space-y-6">
             <div className="space-y-2">
               <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Starknet Address</label>
@@ -127,7 +135,6 @@ export default function TrusteesPage() {
                 />
               </div>
             </div>
-
             <button
               onClick={addTrustee}
               disabled={loading || !trusteeAddr}
@@ -137,14 +144,12 @@ export default function TrusteesPage() {
             </button>
           </div>
         </div>
-
         <div className="lg:col-span-3 space-y-6">
           <div className="flex items-center justify-between px-2">
             <h3 className="text-sm font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
               <Users size={16} /> Current Delegates ({trustees.length})
             </h3>
           </div>
-
           <AnimatePresence>
             <div className="grid gap-4">
               {trustees.length === 0 ? (
@@ -156,6 +161,7 @@ export default function TrusteesPage() {
                   <motion.div 
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
                     transition={{ delay: index * 0.1 }}
                     key={t} 
                     className="flex justify-between items-center p-6 bg-slate-900/40 border border-slate-800 rounded-2xl hover:border-indigo-500/30 transition-all group backdrop-blur-md"

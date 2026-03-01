@@ -5,8 +5,8 @@ import { getStarknetAccount, isAccountDeployed } from "@/lib/wallet";
 import { getLegacyContract } from "@/lib/contract";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, Clock, Zap, AlertTriangle, AlertCircle } from "lucide-react";
-import toast from "react-hot-toast";
+import { Shield, Clock, Zap, AlertTriangle, AlertCircle, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import WalletAddress from "@/components/Wallet/WalletAddress";
 import StatsCard from "@/components/dashboard/StatsCard";
 import PlanCard from "@/components/dashboard/PlanCard";
@@ -31,16 +31,6 @@ export default function Dashboard() {
     { name: "Diamond", duration: "3 Years", fee: "12%", icon: <Zap className="text-purple-400" /> },
   ];
 
-  if (!ready) return null;
-
-  if (!authenticated) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-slate-950 text-white">
-        Please login first.
-      </div>
-    );
-  }
-
   useEffect(() => {
     async function loadVaultData() {
       if (!user) return;
@@ -53,17 +43,12 @@ export default function Dashboard() {
         setAccountDeployed(deployed);
 
         if (!deployed) {
-          console.warn("Account not deployed on-chain yet.");
           setLoading(false);
           return;
         }
 
         const contract = getLegacyContract(account);
-
-        if (!contract) {
-          console.warn("Contract not initialized.");
-          return;
-        }
+        if (!contract) return;
 
         const res = await contract.get_status();
 
@@ -89,15 +74,26 @@ export default function Dashboard() {
       }
     }
 
-    loadVaultData();
-  }, [user]);
+    if (ready && authenticated) loadVaultData();
+  }, [user, ready, authenticated]);
+
+  if (!ready) return null;
+
+  if (!authenticated) {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center bg-slate-950 text-white gap-4">
+        <Shield className="text-indigo-500 animate-pulse" size={48} />
+        <p className="font-bold tracking-tight">Access Restricted. Please login.</p>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-slate-950 text-indigo-500">
+      <div className="h-screen flex items-center justify-center bg-slate-950">
         <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-indigo-500"></div>
-          <p className="text-slate-400 animate-pulse font-medium">
+          <Loader2 className="animate-spin text-indigo-500" size={40} />
+          <p className="text-slate-400 animate-pulse font-medium tracking-widest uppercase text-xs">
             Securing Vault Identity...
           </p>
         </div>
@@ -105,35 +101,56 @@ export default function Dashboard() {
     );
   }
 
+  const handlePlanActivation = async (planName: string) => {
+    if (!accountDeployed) {
+      toast.error("Account not deployed. Fund your vault address to activate plans.");
+      return;
+    }
+
+    const toastId = toast.loading(`Initiating ${planName} subscription...`);
+
+    try {
+      const contract = getLegacyContract(starkAccount);
+      if (!contract) throw new Error("Contract not initialized");
+
+      await contract.subscribe_plan(planName.toLowerCase());
+      toast.success(`${planName} plan activated successfully!`, { id: toastId });
+    } catch (err: any) {
+      toast.error(`Activation failed: ${err?.message || "Transaction reverted"}`, { id: toastId });
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-7xl mx-auto space-y-10 p-6"
+      className="max-w-7xl mx-auto space-y-10 p-6 pb-20"
     >
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-500">
             Vault Overview
           </h2>
-          <p className="text-slate-500 mt-1">
-            Logged in as:{" "}
-            <span className="text-indigo-400">
-              {user?.email?.address || "Authenticated User"}
-            </span>
-          </p>
+          <div className="flex items-center gap-2 mt-1">
+             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+             <p className="text-slate-500 text-sm font-medium">
+               Secure Session: <span className="text-indigo-400/80">{user?.email?.address}</span>
+             </p>
+          </div>
         </div>
         <WalletAddress />
       </div>
 
       {!accountDeployed && (
-        <div className="p-4 bg-amber-950/40 border border-amber-700/50 rounded-2xl flex items-start gap-3">
-          <AlertCircle className="text-amber-500 flex-shrink-0 mt-1" size={20} />
+        <div className="p-6 rounded-[2rem] bg-amber-950/20 border border-amber-700/30 flex items-start gap-4 backdrop-blur-md">
+          <div className="p-2 bg-amber-500/10 rounded-xl">
+            <AlertCircle className="text-amber-500" size={24} />
+          </div>
           <div>
-            <p className="text-amber-200 font-semibold text-sm">Account Not Deployed</p>
-            <p className="text-amber-300/70 text-xs mt-1">
-              Your Starknet account doesn't exist on-chain yet. Deploy it first via Argent X or other wallet.
-              Once deployed, the vault data will load automatically.
+            <p className="text-amber-200 font-bold">Action Required: Account Deployment</p>
+            <p className="text-amber-300/60 text-xs mt-1 leading-relaxed max-w-2xl">
+              Your Starknet Smart Account is currently in a "Counterfactual" state. To enable full legacy protection, 
+              please fund your address. Deployment will trigger automatically upon receipt of STRK/ETH.
             </p>
           </div>
         </div>
@@ -170,35 +187,18 @@ export default function Dashboard() {
         />
       </div>
 
-      <div className="space-y-6">
-        <h3 className="text-2xl font-bold text-white">Security Subscriptions</h3>
+      <div className="space-y-8 pt-4">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-2xl font-black text-white tracking-tight">Security Subscriptions</h3>
+          <p className="text-slate-500 text-sm">Automated protocol parameters for asset distribution.</p>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {PLANS.map((plan) => (
               <PlanCard
                 key={plan.name}
                 {...plan}
-                onActivate={() => {
-                  if (!accountDeployed) {
-                    alert("⚠️ Account not deployed yet. Fund your vault address first.");
-                    return;
-                  }
-
-                  toast.promise(
-                    (async () => {
-                      const contract = getLegacyContract(starkAccount);
-                      if (!contract) throw new Error("Contract not initialized");
-
-                      await contract.subscribe_plan(plan.name.toLowerCase());
-                      return "Plan activated!";
-                    })(),
-                    {
-                      loading: `Activating ${plan.name}...`,
-                      success: `✅ ${plan.name} plan activated!`,
-                      error: (err: any) => `❌ Failed to activate plan: ${err?.message || err}`,
-                    }
-                  );
-                }}
+                onActivate={() => handlePlanActivation(plan.name)}
               />
             ))}
           </div>
