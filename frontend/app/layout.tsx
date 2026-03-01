@@ -15,12 +15,12 @@ export const metadata: Metadata = {
   description: "Programmable Digital Legacy on StarkNet",
   openGraph: {
     title: "AfterKey",
-    description: "Premium Web3 security platform.",
+    description: "Programmable Digital Legacy",
     images: [
       {
-        url: "./icon.png",
+        url: "/opengraph-image.png",
         width: 1200,
-        height: 1000,
+        height: 630,
       },
     ],
   },
