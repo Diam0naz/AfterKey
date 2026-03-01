@@ -46,7 +46,7 @@ export default function Testimonials() {
       {}
       <div className="absolute inset-0 bg-linear-to-b from-[#11141f] to-[#0b0f1a] pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-indigo-600/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute inset-0" style={{ zIndex: 2 }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
         <ParticleCanvas />
       </div>
       <div className="relative">
