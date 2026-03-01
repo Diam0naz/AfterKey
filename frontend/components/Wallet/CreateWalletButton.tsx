@@ -1,9 +1,10 @@
+"use client";
 import { useState } from "react";
-import { FaWallet, FaSpinner, FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
 import { useCreateWallet, usePrivy } from "@privy-io/react-auth";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Wallet, Loader2, CheckCircle2, AlertTriangle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function CreateWalletButton() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -15,71 +16,56 @@ export default function CreateWalletButton() {
     if (!authenticated || !user) return toast.error("Please verify your email first.");
 
     if (user?.wallet) {
-      toast("Wallet already exists.");
+      toast.info("Wallet already exists. Redirecting...");
       return router.push("/dashboard");
     }
 
     setStatus("loading");
+    const toastId = toast.loading("Generating your secure vault...");
 
     try {
       await createWallet();
-
       setStatus("success");
-      toast.success("Wallet created successfully!");
-
-      setTimeout(() => router.push("/dashboard"), 1200);
-    } catch (err) {
+      toast.success("Vault created successfully!", { id: toastId });
+      setTimeout(() => router.push("/dashboard"), 1500);
+    } catch (err: any) {
       console.error(err);
       setStatus("error");
-      toast.error("Wallet creation failed.");
+      toast.error(err.message || "Wallet creation failed.", { id: toastId });
       setTimeout(() => setStatus("idle"), 3000);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-md mx-auto w-full">
       <button
         onClick={handleClick}
         disabled={status !== "idle"}
-        className={`w-full relative overflow-hidden py-4 px-6 rounded-xl font-medium transition-all ${
+        className={`w-full relative py-5 px-6 rounded-[1.5rem] font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-2xl ${
           status === "idle"
-            ? "bg-indigo-500 hover:bg-indigo-600 text-white shadow-lg hover:shadow-indigo-500/30"
+            ? "bg-white text-black hover:bg-indigo-50 hover:scale-[1.02]"
             : status === "loading"
-            ? "bg-indigo-600/80 text-white"
+            ? "bg-slate-800 text-slate-400 cursor-wait"
             : status === "success"
-            ? "bg-green-500/90 text-white"
-            : "bg-red-500/90 text-white"
+            ? "bg-green-600 text-white"
+            : "bg-red-600 text-white"
         }`}
       >
         <AnimatePresence mode="wait">
-          {status === "idle" && (
-            <motion.span key="idle" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex items-center justify-center gap-3">
-              <FaWallet className="text-lg" /> <span>Create New Wallet</span>
-            </motion.span>
-          )}
-          {status === "loading" && (
-            <motion.span key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center justify-center gap-3">
-              <FaSpinner className="animate-spin text-lg" /> <span>Creating Wallet...</span>
-            </motion.span>
-          )}
-          {status === "success" && (
-            <motion.span key="success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center justify-center gap-3">
-              <FaCheckCircle className="text-lg" /> <span>Wallet Created!</span>
-            </motion.span>
-          )}
-          {status === "error" && (
-            <motion.span key="error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center justify-center gap-3">
-              <FaExclamationTriangle className="text-lg" /> <span>Creation Failed</span>
-            </motion.span>
-          )}
+          <motion.div
+            key={status}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            className="flex items-center justify-center gap-3"
+          >
+            {status === "idle" && <><Wallet size={18} /> Initialize Vault</>}
+            {status === "loading" && <><Loader2 className="animate-spin" size={18} /> Creating...</>}
+            {status === "success" && <><CheckCircle2 size={18} /> Success</>}
+            {status === "error" && <><AlertTriangle size={18} /> Failed</>}
+          </motion.div>
         </AnimatePresence>
       </button>
-      <p className="mt-3 text-center text-sm text-gray-400">
-        {status === "idle" && "Generate a new secure wallet address"}
-        {status === "loading" && "This may take a few seconds..."}
-        {status === "success" && "Your wallet is ready to use!"}
-        {status === "error" && "Please try again"}
-      </p>
     </div>
   );
 }

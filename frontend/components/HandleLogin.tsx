@@ -1,16 +1,27 @@
 "use client";
 import { useState, useEffect } from "react";
-import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth"; // Removed useWallets as it's not needed for basic redirect
 import { FaEnvelope, FaWallet, FaArrowRight } from "react-icons/fa";
-import toast, { Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast"; // Keeping Hot Toast to match your styling
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function HandleLogin() {
-  const { login, user, ready } = usePrivy();
-  const { wallets } = useWallets();
+  const { login, ready, authenticated, user } = usePrivy();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  // FIX: Monitor the authentication state. 
+  // Once the login popup closes and Privy updates 'authenticated', this triggers.
+  useEffect(() => {
+    if (ready && authenticated) {
+      toast.success("Successfully signed in!");
+      const timer = setTimeout(() => {
+        router.push("/dashboard");
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [ready, authenticated, router]);
 
   const handleLogin = async () => {
     if (!ready) {
@@ -20,37 +31,13 @@ export default function HandleLogin() {
 
     setIsLoading(true);
     try {
+      // login() opens the Privy modal. We don't need to do anything after it
+      // because the useEffect above handles the successful state change.
       await login();
-      
-      if (user) {
-        const primaryWallet = wallets.length > 0 ? wallets[0] : null;
-        
-        if (!primaryWallet) {
-          console.warn("User logged in but no wallet found yet.");
-        }
-
-        await fetch("http://localhost:3000/api/users", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: user.email?.address,
-            walletAddress: primaryWallet?.address || "",
-            publicKey: "04bfcab1e1f63d92ecab4870c23d37e0d8a0a6b3e6b0ab0e86f1b59c3d2e2b1fbc567f32f7c0f2e726a9c77d1e3f55b0f902c6f4c9c8b1f1a0f02e5a2e37f9b2e3",
-            recoveryThreshold: 2,
-            inactivityMonths: 1,
-          }),
-        });
-
-        toast.success("Successfully signed in!");
-        setTimeout(() => {
-          router.push("/dashboard");
-        }, 1200);
-      }
     } catch (error) {
       toast.error("Failed to sign in. Please try again.");
       console.error("Login error:", error);
-    } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Only stop loading if it fails
     }
   };
 
@@ -80,7 +67,7 @@ export default function HandleLogin() {
         disabled={isLoading || !ready}
         className={`w-full flex items-center justify-center gap-3 py-4 rounded-xl font-semibold transition-all duration-300 ${
           !isLoading && ready
-            ? "bg-linear-to-br from-indigo-700 to-indigo-500 hover:scale-[1.02] shadow-lg shadow-indigo-500/20 text-white"
+            ? "bg-gradient-to-br from-indigo-700 to-indigo-500 hover:scale-[1.02] shadow-lg shadow-indigo-500/20 text-white"
             : "bg-slate-800 text-slate-500 cursor-not-allowed opacity-70"
         }`}
       >
