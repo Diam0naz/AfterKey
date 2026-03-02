@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import { usePrivy } from "@privy-io/react-auth"; // Removed useWallets as it's not needed for basic redirect
+import { usePrivy } from "@privy-io/react-auth"; 
 import { FaEnvelope, FaWallet, FaArrowRight } from "react-icons/fa";
-import { toast, Toaster } from "react-hot-toast"; // Keeping Hot Toast to match your styling
+import { toast, Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -11,8 +11,6 @@ export default function HandleLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  // FIX: Monitor the authentication state. 
-  // Once the login popup closes and Privy updates 'authenticated', this triggers.
   useEffect(() => {
     if (ready && authenticated) {
       toast.success("Successfully signed in!");
@@ -31,13 +29,11 @@ export default function HandleLogin() {
 
     setIsLoading(true);
     try {
-      // login() opens the Privy modal. We don't need to do anything after it
-      // because the useEffect above handles the successful state change.
       await login();
     } catch (error) {
       toast.error("Failed to sign in. Please try again.");
       console.error("Login error:", error);
-      setIsLoading(false); // Only stop loading if it fails
+      setIsLoading(false);
     }
   };
 
